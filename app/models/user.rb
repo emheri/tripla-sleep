@@ -1,25 +1,12 @@
 class User < ApplicationRecord
+  include Followable
+  include Sleepable
+
   has_many :sleeps
+  has_many :follows
+  has_many :follower, class_name: 'Follow', foreign_key: 'following_id'
+  has_many :following, through: :follows, source: :follower
+  has_many :followers, through: :follower, source: :user
 
   validates :name, presence: true
-
-  def sleeping
-    sleeps.where.not(sleep_at: nil).where(wake_at: nil).first
-  end
-  
-  def sleeping?
-    sleeps.where.not(sleep_at: nil).where(wake_at: nil).exists?
-  end
-
-  def awake?
-    !sleeping?
-  end
-
-  def sleep!
-    sleeps.create!(sleep_at: Time.current)
-  end
-
-  def wake!
-    sleeping.wake!
-  end
 end

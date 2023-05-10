@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  context 'sleeps relation' do
+  context 'sleepable' do
     let(:user) { create(:user) }
 
     it 'should awake' do
@@ -24,6 +24,26 @@ RSpec.describe User, type: :model do
       user.sleep!
       expect(user.sleeping?).to be true
       expect(user.sleeps.count).to eq(1)
+    end
+  end
+
+  context 'followable' do
+    let(:user) { create(:user) }
+    let(:follow) { create(:user) }
+
+    it 'should follow' do
+      expect do
+        user.follow(follow.id)
+      end.to change {user.following?(follow.id)}.from(false).to(true)
+        .and change { user.follows.count }.from(0).to(1)
+    end
+    
+    it 'should unfollow' do
+      user.follow(follow.id)
+      expect do
+        user.unfollow(follow.id)
+      end.to change {user.following?(follow.id)}.from(true).to(false)
+        .and change { user.follows.count }.from(1).to(0)
     end
   end
 end
