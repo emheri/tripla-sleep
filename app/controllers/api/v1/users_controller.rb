@@ -30,7 +30,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy
-    if @user.desroy
+    if @user.destroy
       head :ok
     else
       render json: { message: @user.errors.messages }, status: :bad_request

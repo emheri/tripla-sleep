@@ -83,7 +83,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
     end
   end
 
-  describe 'GET /show' do
+  describe 'DELETE /destroy' do
     let(:user) { create(:user) }
 
     it 'return http success' do
