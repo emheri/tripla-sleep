@@ -1,6 +1,12 @@
 class Api::V1::SleepsController < ApplicationController
   before_action :set_user
 
+  def index
+    sleeps = @user.sleeps.order(sleep_at: :desc)
+
+    render json: SleepSerializer.new(sleeps).serializable_hash.to_json
+  end
+
   def sleep
     context = SleepServices::Sleep.call(record: @user)
 
@@ -24,6 +30,6 @@ class Api::V1::SleepsController < ApplicationController
   private
 
   def set_user
-    @user = User.find params[:id]
+    @user = User.find params[:user_id]
   end
 end
