@@ -4,9 +4,9 @@ module User::Sleepable
   def sleeping
     sleeps.where.not(sleep_at: nil).where(wake_at: nil).first
   end
-  
+
   def sleeping?
-    sleeps.where.not(sleep_at: nil).where(wake_at: nil).exists?
+    sleeps.where.not(sleep_at: nil).exists?(wake_at: nil)
   end
 
   def awake?

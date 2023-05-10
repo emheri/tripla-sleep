@@ -6,7 +6,7 @@ class Sleep < ApplicationRecord
   validate :must_sleep
 
   def wake!
-    update(wake_at: Time.current)  
+    update(wake_at: Time.current)
   end
 
   private

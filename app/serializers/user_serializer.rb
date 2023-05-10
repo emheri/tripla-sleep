@@ -3,7 +3,7 @@ class UserSerializer
   attributes :name
 
   # show in hour
-  attributes :sleep_duration, if: Proc.new { |record|
+  attributes :sleep_duration, if: proc { |record|
     record.try(:sleep_duration)
   } do |record|
     hour = record.sleep_duration / 3600

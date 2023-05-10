@@ -1,7 +1,9 @@
 FactoryBot.define do
+  sleep_at = 6.days.ago
+  wake_at = sleep_at + 8.hours
   factory :sleep do
-    sleep_at { "2023-05-09 22:15:39" }
-    wake_at { "2023-05-09 22:15:39" }
-    duration { 1.5 }
+    user
+    sleep_at { sleep_at }
+    wake_at { wake_at }
   end
 end

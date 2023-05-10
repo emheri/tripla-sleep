@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 # TODO: assert JSON body matcher for response in every request
-RSpec.describe "Api::V1::Users", type: :request do
-  describe "GET /index" do
+RSpec.describe 'Api::V1::Users', type: :request do
+  describe 'GET /index' do
     before do
       FactoryBot.create_list(:user, 10)
       get '/api/v1/users'
     end
-    
+
     it 'returns http success' do
       expect(response).to have_http_status(:success)
     end
@@ -17,7 +17,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
   end
 
-  describe "POST /create" do
+  describe 'POST /create' do
     context 'with valid paramenters' do
       let(:user) { build(:user) }
 
@@ -27,7 +27,6 @@ RSpec.describe "Api::V1::Users", type: :request do
             name: user.name
           }
         }
-
       end
       it 'return a created status' do
         expect(response).to have_http_status(:created)
@@ -41,13 +40,13 @@ RSpec.describe "Api::V1::Users", type: :request do
       end
 
       it 'return bad request when pass empty name' do
-        post '/api/v1/users', params: { user: { name: nil }}
+        post '/api/v1/users', params: { user: { name: nil } }
         expect(response).to have_http_status(:bad_request)
       end
     end
   end
 
-  describe "GET /show" do
+  describe 'GET /show' do
     let(:user) { create(:user) }
 
     it 'return http success' do
@@ -56,12 +55,12 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
 
     it 'return http not_found' do
-      get "/api/v1/users/123"
+      get '/api/v1/users/123'
       expect(response).to have_http_status(:not_found)
     end
   end
 
-  describe "PUT/PATCH /update" do
+  describe 'PUT/PATCH /update' do
     let(:user) { create(:user) }
 
     context 'with valid paramenters' do
@@ -78,13 +77,13 @@ RSpec.describe "Api::V1::Users", type: :request do
       end
 
       it 'return bad request when pass empty name' do
-        put "/api/v1/users/#{user.id}", params: { user: { name: nil }}
+        put "/api/v1/users/#{user.id}", params: { user: { name: nil } }
         expect(response).to have_http_status(:bad_request)
       end
     end
   end
 
-  describe "GET /show" do
+  describe 'GET /show' do
     let(:user) { create(:user) }
 
     it 'return http success' do
@@ -93,7 +92,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
 
     it 'return http not_found' do
-      delete "/api/v1/users/123"
+      delete '/api/v1/users/123'
       expect(response).to have_http_status(:not_found)
     end
   end

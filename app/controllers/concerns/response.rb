@@ -9,7 +9,7 @@ module Response
   def render_unprocessable_entity(exception)
     render json: { message: exception.message }, status: :unprocessable_entity
   end
-  
+
   def render_not_found(exception)
     render json: { message: exception.message }, status: :not_found
   end

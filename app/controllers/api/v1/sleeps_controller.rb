@@ -1,6 +1,6 @@
 class Api::V1::SleepsController < ApplicationController
   before_action :set_user
-  
+
   def sleep
     context = SleepServices::Sleep.call(record: @user)
 

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::Sleeps", type: :request do
+RSpec.describe 'Api::V1::Sleeps', type: :request do
   let(:user) { create(:user) }
 
-  describe "POST /sleep" do
+  describe 'POST /sleep' do
     it "return http success when user don't sleep" do
       expect(user.awake?).to be true
       post "/api/v1/users/#{user.id}/sleep"
@@ -11,7 +11,7 @@ RSpec.describe "Api::V1::Sleeps", type: :request do
       expect(response).to have_http_status(:success)
     end
 
-    it "return http unprocessable_entity when user still sleep" do
+    it 'return http unprocessable_entity when user still sleep' do
       user.sleep!
       expect(user.sleeping?).to be true
       post "/api/v1/users/#{user.id}/sleep"
@@ -20,8 +20,8 @@ RSpec.describe "Api::V1::Sleeps", type: :request do
     end
   end
 
-  describe "POST /wake" do
-    it "return http success when user sleep" do
+  describe 'POST /wake' do
+    it 'return http success when user sleep' do
       user.sleep!
       expect(user.sleeping?).to be true
       post "/api/v1/users/#{user.id}/wake"

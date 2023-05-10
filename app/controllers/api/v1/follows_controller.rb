@@ -22,20 +22,20 @@ class Api::V1::FollowsController < ApplicationController
 
   def following
     users = @user.following
-      .joins(:sleeps)
-      .where('sleep_at >= ?', Date.current - 7.days)
-      .select('users.*, sleeps.duration AS sleep_duration')
-      .order('sleeps.duration DESC')
+                 .joins(:sleeps)
+                 .where('sleep_at >= ?', Date.current - 7.days)
+                 .select('users.*, sleeps.duration AS sleep_duration')
+                 .order('sleeps.duration DESC')
 
     render json: UserSerializer.new(users).serializable_hash.to_json
   end
 
   def followers
     users = @user.followers
-      .joins(:sleeps)
-      .where('sleep_at >= ?', Date.current - 7.days)
-      .select('users.*, sleeps.duration AS sleep_duration')
-      .order('sleeps.duration DESC')
+                 .joins(:sleeps)
+                 .where('sleep_at >= ?', Date.current - 7.days)
+                 .select('users.*, sleeps.duration AS sleep_duration')
+                 .order('sleeps.duration DESC')
 
     render json: UserSerializer.new(users).serializable_hash.to_json
   end

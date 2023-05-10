@@ -5,9 +5,8 @@ Rails.application.routes.draw do
         member do
           post '/sleep', to: 'sleeps#sleep'
           post '/wake', to: 'sleeps#wake'
-          
         end
-        
+
         resources :follows, only: [:create] do
           collection do
             delete '/:following_id', to: 'follows#destroy'

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   it 'should create user' do
     user = create(:user)
-    expect(user).to  be_valid
+    expect(user).to be_valid
   end
 
   context 'validation' do
@@ -34,16 +34,16 @@ RSpec.describe User, type: :model do
     it 'should follow' do
       expect do
         user.follow(follow.id)
-      end.to change {user.following?(follow.id)}.from(false).to(true)
-        .and change { user.follows.count }.from(0).to(1)
+      end.to change { user.following?(follow.id) }.from(false).to(true)
+                                                  .and change { user.follows.count }.from(0).to(1)
     end
-    
+
     it 'should unfollow' do
       user.follow(follow.id)
       expect do
         user.unfollow(follow.id)
-      end.to change {user.following?(follow.id)}.from(true).to(false)
-        .and change { user.follows.count }.from(1).to(0)
+      end.to change { user.following?(follow.id) }.from(true).to(false)
+                                                  .and change { user.follows.count }.from(1).to(0)
     end
   end
 end

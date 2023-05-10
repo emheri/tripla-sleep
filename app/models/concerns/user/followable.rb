@@ -10,6 +10,6 @@ module User::Followable
   end
 
   def following?(id)
-    follows.where(following_id: id).exists?
+    follows.exists?(following_id: id)
   end
 end
