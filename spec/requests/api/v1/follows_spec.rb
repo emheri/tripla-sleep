@@ -51,17 +51,39 @@ RSpec.describe "Api::V1::Follows", type: :request do
       expect(response).to have_http_status(:ok)
     end
     
-    it 'following_id not exist' do
+    it 'following_id not exist in record' do
       delete "/api/v1/users/#{user.id}/follows/123"
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:not_found)
     end
 
-    it 'not follow following_id' do
+    it 'not follow following_id but record exist' do
       user.unfollow(follow.id)
       delete "/api/v1/users/#{user.id}/follows/#{follow.id}"
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
+
+  describe "GET /following" do
+    it "return ok status" do
+      get "/api/v1/users/#{user.id}/follows/following"
+      expect(response).to have_http_status(:ok)
     end
     
+    it 'user_id not exists' do
+      get "/api/v1/users/123/follows/following"
+      expect(response).to have_http_status(:not_found) 
+    end
   end
   
+  describe "GET /followers" do
+    it "return ok status" do
+      get "/api/v1/users/#{user.id}/follows/followers"
+      expect(response).to have_http_status(:ok)
+    end
+    
+    it 'user_id not exists' do
+      get "/api/v1/users/123/follows/followers"
+      expect(response).to have_http_status(:not_found) 
+    end
+  end
 end

@@ -1,7 +1,7 @@
 class Api::V1::FollowsController < ApplicationController
   before_action :set_user
-  before_action :validate_params
-  before_action :set_followed_user
+  before_action :validate_params, only: %i[create destroy]
+  before_action :set_followed_user, only: %i[create destroy]
 
   def create
     follow = @user.follow(@followed_user.id)
@@ -16,10 +16,30 @@ class Api::V1::FollowsController < ApplicationController
     if @user.unfollow(@followed_user.id)
       head :ok
     else
-      head :bad_request
+      render json: { message: 'User not following' }, status: :bad_request
     end
   end
-  
+
+  def following
+    users = @user.following
+      .joins(:sleeps)
+      .where('sleep_at >= ?', Date.current - 7.days)
+      .select('users.*, sleeps.duration AS sleep_duration')
+      .order('sleeps.duration DESC')
+
+    render json: UserSerializer.new(users).serializable_hash.to_json
+  end
+
+  def followers
+    users = @user.followers
+      .joins(:sleeps)
+      .where('sleep_at >= ?', Date.current - 7.days)
+      .select('users.*, sleeps.duration AS sleep_duration')
+      .order('sleeps.duration DESC')
+
+    render json: UserSerializer.new(users).serializable_hash.to_json
+  end
+
   private
 
   def set_user
