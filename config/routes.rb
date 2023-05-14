@@ -7,6 +7,7 @@ Rails.application.routes.draw do
             delete '/:following_id', to: 'follows#destroy'
             get :following
             get :followers
+            get 'following/sleeps', to: 'follows#sleep'
           end
         end
 

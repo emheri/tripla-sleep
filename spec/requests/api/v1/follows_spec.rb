@@ -79,7 +79,7 @@ RSpec.describe 'Api::V1::Follows', type: :request do
       end
 
       it 'return sleeps schema' do
-        expect(json).to match_response_schema('follows')
+        expect(json).to match_response_schema('users')
       end
     end
 
@@ -90,7 +90,7 @@ RSpec.describe 'Api::V1::Follows', type: :request do
   end
 
   describe 'GET /followers' do
-    context 'succeess response' do
+    context 'success response' do
       before do
         user.follow(follow.id)
         get "/api/v1/users/#{follow.id}/follows/followers"
@@ -105,13 +105,38 @@ RSpec.describe 'Api::V1::Follows', type: :request do
       end
 
       it 'return sleeps schema' do
-        expect(json).to match_response_schema('follows')
+        expect(json).to match_response_schema('users')
       end
     end
 
     it 'user_id not exists' do
       get '/api/v1/users/123/follows/followers'
       expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  describe 'GET /following/sleep' do
+    context 'success response ' do
+      before do
+        user.follow(follow.id)
+        get "/api/v1/users/#{user.id}/follows/following/sleeps"
+      end
+
+      it 'return ok status' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns an Array' do
+        expect(json['data']).to be_instance_of Array
+      end
+
+      it 'returns an Array' do
+        expect(json['data'].size).to eq(3) # follow has 3 sleep records with different days
+      end
+
+      it 'return sleeps schema' do
+        expect(json).to match_response_schema('follows')
+      end
     end
   end
 end
