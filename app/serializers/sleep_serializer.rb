@@ -4,7 +4,7 @@ class SleepSerializer
     record.sleep_at.to_fs(:long)
   end
   attributes :wake_at do |record|
-    record.sleep_at.to_fs(:long)
+    record.wake_at&.to_fs(:long)
   end
   attributes :duration do |record|
     hour = record.duration / 3600

@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Sleeps', type: :request do
-  let(:user) { create(:user) }
+  let(:user) { create(:user_with_sleeps) }
 
   describe 'GET /index' do
     before do
-      create(:sleep, user:)
       get "/api/v1/users/#{user.id}/sleeps"
     end
 
@@ -13,8 +12,16 @@ RSpec.describe 'Api::V1::Sleeps', type: :request do
       expect(response).to have_http_status(:success)
     end
 
-    it 'returns all users' do
-      expect(json['data'].size).to eq(1)
+    it 'returns users size' do
+      expect(json['data'].size).to eq(3)
+    end
+
+    it 'returns an Array' do
+      expect(json['data']).to be_instance_of Array
+    end
+
+    it 'return sleeps schema' do
+      expect(json).to match_response_schema('sleeps')
     end
   end
 

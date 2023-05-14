@@ -1,9 +1,15 @@
 FactoryBot.define do
-  sleep_at = 6.days.ago
-  wake_at = sleep_at + 8.hours
   factory :sleep do
     association :user
-    sleep_at { sleep_at }
-    wake_at { wake_at }
+
+    transient do
+      sleep_day { 3 }
+      sleep_time { sleep_day.days.ago }
+      wake_time { sleep_time + 8.hours }
+    end
+
+    sleep_at { sleep_time }
+    wake_at { wake_time }
+    duration { (wake_time - sleep_time).to_i.abs }
   end
 end

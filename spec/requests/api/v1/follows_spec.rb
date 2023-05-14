@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Follows', type: :request do
-  let(:user) { create(:user) }
-  let(:follow) { create(:user) }
+  let(:user) { create(:user_with_sleeps) }
+  let(:follow) { create(:user_with_sleeps) }
 
   describe 'POST /create' do
     it 'return a created status' do
@@ -64,9 +64,23 @@ RSpec.describe 'Api::V1::Follows', type: :request do
   end
 
   describe 'GET /following' do
-    it 'return ok status' do
-      get "/api/v1/users/#{user.id}/follows/following"
-      expect(response).to have_http_status(:ok)
+    context 'success response' do
+      before do
+        user.follow(follow.id)
+        get "/api/v1/users/#{user.id}/follows/following"
+      end
+
+      it 'return ok status' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns an Array' do
+        expect(json['data']).to be_instance_of Array
+      end
+
+      it 'return sleeps schema' do
+        expect(json).to match_response_schema('follows')
+      end
     end
 
     it 'user_id not exists' do
@@ -76,9 +90,23 @@ RSpec.describe 'Api::V1::Follows', type: :request do
   end
 
   describe 'GET /followers' do
-    it 'return ok status' do
-      get "/api/v1/users/#{user.id}/follows/followers"
-      expect(response).to have_http_status(:ok)
+    context 'succeess response' do
+      before do
+        user.follow(follow.id)
+        get "/api/v1/users/#{follow.id}/follows/followers"
+      end
+
+      it 'return ok status' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns an Array' do
+        expect(json['data']).to be_instance_of Array
+      end
+
+      it 'return sleeps schema' do
+        expect(json).to match_response_schema('follows')
+      end
     end
 
     it 'user_id not exists' do

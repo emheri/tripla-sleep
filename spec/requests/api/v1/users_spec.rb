@@ -15,6 +15,14 @@ RSpec.describe 'Api::V1::Users', type: :request do
     it 'returns all users' do
       expect(json['data'].size).to eq(10)
     end
+
+    it 'returns an Array' do
+      expect(json['data']).to be_instance_of Array
+    end
+
+    it 'return users schema' do
+      expect(json).to match_response_schema('users')
+    end
   end
 
   describe 'POST /create' do
@@ -28,8 +36,13 @@ RSpec.describe 'Api::V1::Users', type: :request do
           }
         }
       end
+
       it 'return a created status' do
         expect(response).to have_http_status(:created)
+      end
+
+      it 'return user schema' do
+        expect(json).to match_response_schema('user')
       end
     end
 
@@ -49,9 +62,18 @@ RSpec.describe 'Api::V1::Users', type: :request do
   describe 'GET /show' do
     let(:user) { create(:user) }
 
-    it 'return http success' do
-      get "/api/v1/users/#{user.id}"
-      expect(response).to have_http_status(:success)
+    context 'success response' do
+      before do
+        get "/api/v1/users/#{user.id}"
+      end
+
+      it 'return http success' do
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'return user schema' do
+        expect(json).to match_response_schema('user')
+      end
     end
 
     it 'return http not_found' do
@@ -64,9 +86,15 @@ RSpec.describe 'Api::V1::Users', type: :request do
     let(:user) { create(:user) }
 
     context 'with valid paramenters' do
-      it 'return a http success' do
+      before do
         put "/api/v1/users/#{user.id}", params: { user: { name: 'John doe' } }
+      end
+      it 'return a http success' do
         expect(response).to have_http_status(:success)
+      end
+
+      it 'return user schema' do
+        expect(json).to match_response_schema('user')
       end
     end
 
